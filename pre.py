@@ -2,6 +2,7 @@
 import sys
 import string
 import re
+import os
 from optparse import OptionParser
 def AnalyseInputFile(inputFile,pro_symbol):
     Convert_list = dict()
@@ -20,31 +21,34 @@ def AnalyseInputFile(inputFile,pro_symbol):
             OutputFile(cp_l)
     return Convert_list
 def OutputFile(Data):
-    f = open('Output.txt', 'a+')
+    #filename = 'Output.txt'
+    f = open(filename, 'a+')
     f.write(Data)
     f.write('\n')
     f.close()
-    print Data
-
 def CheckBetweenValue(Datasetfile):
     symbol_list = dict()
+    check = 0
     with open(Datasetfile,'r') as f:
         for line in f.readlines():
             if ' ' in line:
-                print "====================="
-                print "File have space value"
-                print "====================="
+                if check == 0:
+                    print "====================="
+                    print "File have space value"
+                    print "====================="
+                    check = 1
                 #finish_string = str(pre_string).split()
                 #value = 1
                 s = ' '
                 symbol_list[s] = 1
             for pun in string.punctuation:
                 if pun in line:
+                    if check == 0:
                         print "======================"
                         print "File have symbol value"
                         print "======================"
-                        symbol_list[pun] = 1
-                        flag = flag + 1
+                        check = 1
+                    symbol_list[pun] = 1
     if len(symbol_list) > 1:
         print "File input error please check input file!!"
         sys.exit()
@@ -52,22 +56,28 @@ def CheckBetweenValue(Datasetfile):
     return symbol
 if __name__ =="__main__":
     get_Table = dict()
-    optparser = OptionParser("useage: %prog"+"-f <input dataset File>")
+    global filename
+    optparser = OptionParser("useage: %prog"+"-f <input dataset File>"+"-o <output covert dataset path>"+"-O ")
     optparser.add_option('-f', '--inputFile',dest='input',help='filename',default=None)
+    optparser.add_option('-o','--output',dest='output',help='Output filename',default='Output.txt')
+    optparser.add_option('-D','--outputHDFS',dest='output',help='Output filename',default='Output.txt')
     (options, args) = optparser.parse_args()
     if options.input is None:
-        inFile = sys.stdin
+        print sys.usage
+        sys.exit()
     elif options.input is not None:
         inFile = options.input
     else:
         print options.usage
         sys.exit('Bye bye see you baby <3')
+    filename = options.output
+    if os.path.exists(filename):
+        print "Here already have file"
+        sys.exit()
     print "Now do pre process from file.........."
     get_symbol = CheckBetweenValue(inFile)
     get_Table = AnalyseInputFile(inFile,get_symbol)
-    print get_Table
-
-    
-
-
-
+    print "Your dataset list table is:"
+    for key, value in sorted(get_Table.iteritems(), key=lambda (k,v): (v,k)):
+        print "%s: %s" % (key, value)
+    print "Convert Successfully!!!"
