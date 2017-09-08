@@ -57,7 +57,7 @@ def CheckBetweenValue(Datasetfile):
 if __name__ =="__main__":
     get_Table = dict()
     global filename
-    optparser = OptionParser("useage: %prog"+"-f <input dataset File>"+"-o <output covert dataset path>"+"-O ")
+    optparser = OptionParser("useage: %prog"+"-f <input dataset File>"+"-o <output covert dataset path>"+"-O <output convert dataset to HDFS>")
     optparser.add_option('-f', '--inputFile',dest='input',help='filename',default=None)
     optparser.add_option('-o','--output',dest='output',help='Output filename',default='Output.txt')
     optparser.add_option('-D','--outputHDFS',dest='output',help='Output filename',default='Output.txt')
@@ -71,13 +71,17 @@ if __name__ =="__main__":
         print options.usage
         sys.exit('Bye bye see you baby <3')
     filename = options.output
-    if os.path.exists(filename):
+    dictfile = 'Table.txt'
+    if os.path.exists(filename) or os.path.exists(dictfile):
         print "Here already have file"
         sys.exit()
     print "Now do pre process from file.........."
     get_symbol = CheckBetweenValue(inFile)
     get_Table = AnalyseInputFile(inFile,get_symbol)
+    d = open(dictfile,'a+')
     print "Your dataset list table is:"
     for key, value in sorted(get_Table.iteritems(), key=lambda (k,v): (v,k)):
         print "%s: %s" % (key, value)
+        d.write(key + " " + str(value) + '\n')
+    d.close()
     print "Convert Successfully!!!"
