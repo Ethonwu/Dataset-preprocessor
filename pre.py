@@ -3,6 +3,7 @@ import sys
 import string
 import re
 import os
+import cvs
 from optparse import OptionParser
 def AnalyseInputFile(inputFile,pro_symbol):
     Convert_list = dict()
