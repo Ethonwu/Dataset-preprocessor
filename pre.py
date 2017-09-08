@@ -22,7 +22,6 @@ def AnalyseInputFile(inputFile,pro_symbol):
             OutputFile(cp_l)
     return Convert_list
 def OutputFile(Data):
-    #filename = 'Output.txt'
     f = open(filename, 'a+')
     f.write(Data)
     f.write('\n')
