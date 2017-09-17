@@ -4,7 +4,8 @@ import string
 import re
 if __name__ =="__main__":
     convertDict = dict()
-    convertFile = 'Output.txt'
+    #convertFile = 'Output.txt'
+    convertFile = 'part-r-00000'
     fileTable = 'Table.txt'
     with open(fileTable,'r') as f:
         for line in f.readlines():
@@ -23,7 +24,20 @@ if __name__ =="__main__":
     #print convertDict.get(11)
     with open(convertFile,'r') as f:
         for line in f.readlines():
-            l = line.strip('\n')
+            s = line.strip('\n')
+            if s[0].isspace():
+                continue
+            l = ""
+            count = ""
+            for word in range(0,len(s)):
+                if s[word].isspace():
+                    for c in range(word+1,len(s)):
+                        if s[c].isspace() is False:
+                            
+                            count = count + s[c]
+                    break
+                else:
+                    l = l + s[word]
             result=[]
             result.append(map(int,l.split(',')))
             cp_l = ""
@@ -32,6 +46,8 @@ if __name__ =="__main__":
                     key = int(result[0][w])
                     change = convertDict.get(key)
                     #print change
-                     
-                cp_l = cp_l + change + ","
-            print cp_l
+                if "" is cp_l:
+                    cp_l = cp_l + change 
+                else:
+                    cp_l = cp_l + "," +change
+            print cp_l + "  " + count
