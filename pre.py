@@ -3,7 +3,6 @@ import sys
 import string
 import re
 import os
-import cvs
 from optparse import OptionParser
 def AnalyseInputFile(inputFile,pro_symbol):
     Convert_list = dict()
@@ -11,10 +10,10 @@ def AnalyseInputFile(inputFile,pro_symbol):
     with open(inputFile,'r') as f:
         for line in f.readlines():
             s = line.strip('\n')
-            l = s.replace(pro_symbol," ")
+            l = s.replace(pro_symbol,",")
             cp_l = l
             for w in l:
-                if ' ' is not w:
+                if "," is not w:
                     if w not in Convert_list:
                         Convert_list[w] = i
                         i = i + 1
