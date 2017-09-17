@@ -20,18 +20,18 @@ if __name__ =="__main__":
     print "Now convert!!"
     print "="*30
     print convertDict
+    #print convertDict.get(11)
     with open(convertFile,'r') as f:
         for line in f.readlines():
             l = line.strip('\n')
             result=[]
             result.append(map(int,l.split(',')))
-            cp_l = l
+            cp_l = ""
             for w in range(0,len(result[0])):
                 if "," is not result[0][w]:
-                    n = result[0][w]
-                    for k in convertDict:
-                        compare = int(convertDict[k])
-                        if compare == n:
-                            change = k
-                cp_l = cp_l.replace(str(result[0][w]),change)
+                    key = int(result[0][w])
+                    change = convertDict.get(key)
+                    #print change
+                     
+                cp_l = cp_l + change + ","
             print cp_l
