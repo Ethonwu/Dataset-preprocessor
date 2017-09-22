@@ -2,22 +2,21 @@
 
 Convert data to value making mining convenience
 
-## Requirements
-
-Need this library to upload file to HDFS 
-
-	pip install snakebite	
-	
-	essy_install snakebite
-
 ## Usage
 
-You can decide where output path in local or in HDFS
+Use parameter
 
-Use by -o or -O
+	pre.py -f <Input dataset File> \
+		   -o <Output covert dataset path> \
+		   -s <Enter your file's symbol>
 
-	pre.py -f <input dataset File> \
-		   -o <output covert dataset path> \
-		   -O <output convert dataset to HDFS> 
+Example:
+	
+	pre.py -f example.txt -o Output.txt -s " "
+
+In parameter has default setting so you can also use:
+
+	pre.py -f example.txt
+
 
 
