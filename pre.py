@@ -3,6 +3,8 @@ import sys
 import string
 import re
 import os
+from snakebite.minicluster import MiniCluster
+from snakebite.client import Client
 from optparse import OptionParser
 def AnalyseInputFile(inputFile,pro_symbol):
     Convert_list = dict()
@@ -40,13 +42,37 @@ def OutputFile(Data):
     f.write(Data)
     f.write('\n')
     f.close()
+def HDFS_Upload(uploadfile):
+    if uploadfile:
+        connect = MiniCluster(None, start_cluster=False)  
+        result = connect.ls("/")
+        cluster = MiniCluster("/")
+        if result:
+            #raise Exception("An active Hadoop cluster is found! Not running tests!")
+            if cluster.exists(uploadfile):
+                hadoop_home = os.getenv('HADOOP_HOME')
+                if hadoop_home is None:
+                    print "Can't find hadoop path!!!"
+                    cluster.terminate()
+                    sys.exit()
+                upload_command =  hadoop_home + "/bin/hadoop" + " dfs -put " + filename + " " + uploadfile
+                #print upload_command
+                os.system(upload_command)
+            else:
+                cluster.terminate()
+                print "No path in HDFS"
+        else:
+            print "Hadoop is not running"
+        cluster.terminate()
+    else:
+        sys.exit()
 if __name__ =="__main__":
     get_Table = dict()
     global filename
     optparser = OptionParser("useage: %prog"+"-f <input dataset File>"+"-o <output covert dataset path>"+"-O <output convert dataset to HDFS>")
     optparser.add_option('-f', '--inputFile',dest='input',help='filename',default=None)
     optparser.add_option('-o','--output',dest='output',help='Output filename',default='Output.txt')
-    #optparser.add_option('-D','--outputHDFS',dest='output',help='Output filename',default='Output.txt')
+    optparser.add_option('-D','--outputHDFS',dest='HDFSOutput',help='Output filename',default=None)
     optparser.add_option('-s','--getfileSymbol',dest='symbol',help="Enter your file's symbol",default=' ')
     (options, args) = optparser.parse_args()
     if options.input is None:
@@ -72,3 +98,4 @@ if __name__ =="__main__":
         d.write(key + " " + str(value) + '\n')
     d.close()
     print "Convert Successfully!!!"
+    HDFS_Upload(options.HDFSOutput)
