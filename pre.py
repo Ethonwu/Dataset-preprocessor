@@ -35,6 +35,14 @@ def AnalyseInputFile(inputFile,pro_symbol):
                     cp_l = cp_l + "," + str(Convert_list[s_tmp])
                 else:
                     cp_l = cp_l + "," + str(Convert_list[s_tmp])
+            s_tmp = ""
+            s_tmp = s[symbol_index[i]+1:len(s)]
+            if s_tmp not in Convert_list:
+                Convert_list[s_tmp] = j
+                j = j + 1
+                cp_l = str(Convert_list[s_tmp])
+            else:
+                cp_l = str(Convert_list[s_tmp])
             OutputFile(cp_l)
     return Convert_list
 def OutputFile(Data):

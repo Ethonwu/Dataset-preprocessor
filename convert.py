@@ -4,18 +4,22 @@ import string
 import re
 if __name__ =="__main__":
     convertDict = dict()
-    #convertFile = 'Output.txt'
-    convertFile = 'part-r-00000'
+    convertFile = 'Output.txt'
+    #convertFile = 'part-r-00000'
     fileTable = 'Table.txt'
     with open(fileTable,'r') as f:
         for line in f.readlines():
             l = line.strip('\n')
             l_len = len(l)
             number = ""
-            for i in range(2,l_len):
+            string_tmp = ""
+            for i in range(0,l.find(" ")):
+                string_tmp = string_tmp + str(l[i])
+            for i in range(l.find(" ")+1,l_len):
                 number = number + str(l[i])
             #convertDict[l[0]] = int(number)
-            convertDict[int(number)] = l[0]
+            convertDict[int(number)] = string_tmp
+            print string_tmp
     print "="*30
     print "Read Table Done"
     print "Now convert!!"
