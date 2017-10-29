@@ -27,7 +27,7 @@ def GetDictionery(filetable):
     print "="*30
     #print convertDict
     return convertDict
-def BitMapInit(filename,Tables):
+def BitMapInit(filename,Tables,OutputFile):
     getFileLines = len(open(filename).readlines())
     getTablesElements = len(Tables.keys())
     x , y = getTablesElements , getFileLines
@@ -48,10 +48,13 @@ def BitMapInit(filename,Tables):
                      BitMap[y_line,key-1] = 1
             y_line = y_line + 1
     print BitMap
+    f = open(OutputFile,'a+')
+    np.savetxt(f,BitMap,fmt="%d")
 if __name__ == "__main__":
     optparser = OptionParser("useage: %prog"+"-f <input dataset File>"+"-t <input T_Table>")
     optparser.add_option('-f', '--inputFile',dest='input',help='filename',default=None)
     optparser.add_option('-t', '--inputTableFile',dest='table',help='filename',default=None)
+    optparser.add_option('-o','--output',dest='output',help='Output filename',default='BitMap.txt')
     (options, args) = optparser.parse_args()
     if options.input and options.table is None:
         print sys.usage
@@ -59,6 +62,10 @@ if __name__ == "__main__":
     elif options.input and options.table is not None:
         inputFile = options.input
         table = options.table
+        exportFile = options.output
+    if os.path.exists(exportFile):
+        print "Here already have file"
+        sys.exit()
     TableInfo = dict()
     TableInfo = GetDictionery(table)
-    BitMapInit(inputFile,TableInfo)
+    BitMapInit(inputFile,TableInfo,exportFile)
