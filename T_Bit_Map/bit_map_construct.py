@@ -3,6 +3,7 @@ from optparse import OptionParser
 import os
 import sys
 import numpy as np
+import csv
 def GetDictionery(filetable):
     convertDict = dict()
     convertFile = 'Output.txt'

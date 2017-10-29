@@ -4,11 +4,7 @@ Convert data to value making mining convenience
 
 ## Requirements
 
-	pip install snakebite	
- 	
-	easy_install snakebite
-
-	pip install -r requirements-dev.txt
+	pip install -r requirements.txt
 
 ## Usage
 

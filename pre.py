@@ -78,7 +78,7 @@ def HDFS_Upload(uploadfile):
 if __name__ =="__main__":
     get_Table = dict()
     global filename
-    optparser = OptionParser("useage: %prog"+"-f <input dataset File>"+"-o <output covert dataset path>"+"-O <output convert dataset to HDFS>")
+    optparser = OptionParser("useage: %prog"+"-f <input dataset File>"+"-o <output covert dataset path>"+"-D <output convert dataset to HDFS>")
     optparser.add_option('-f', '--inputFile',dest='input',help='filename',default=None)
     optparser.add_option('-o','--output',dest='output',help='Output filename',default='Output.txt')
     optparser.add_option('-D','--outputHDFS',dest='HDFSOutput',help='Output filename',default=None)
