@@ -4,37 +4,27 @@ import os
 import sys
 import numpy as np
 import csv
-def GetDictionery(filetable):
-    convertDict = dict()
-    convertFile = 'Output.txt'
-    #convertFile = 'part-r-00000'
-    fileTable = 'Table.txt'
-    with open(fileTable,'r') as f:
+def ReadFile(filename):
+    Table = dict()
+    i = 1
+    with open(filename,'r') as f:
         for line in f.readlines():
             l = line.strip('\n')
-            l_len = len(l)
-            number = ""
-            string_tmp = ""
-            for i in range(0,l.find(" ")):
-                string_tmp = string_tmp + str(l[i])
-            for i in range(l.find(" ")+1,l_len):
-                number = number + str(l[i])
-            #convertDict[l[0]] = int(number)
-            convertDict[int(number)] = string_tmp
-    print "="*30
-    print "Read Table Done"
-    print "Now convert!!"
-    print "="*30
-    #print convertDict
-    return convertDict
+            for item in l.split(','):
+                if item not in Table:
+                    Table[item] = i
+                    i = i + 1
+    #for key, value in sorted(Table.iteritems(), key=lambda (k,v): (v,k)):
+     #   print "%s: %s" % (key, value)
+    return Table
 def BitMapInit(filename,Tables,OutputFile):
     getFileLines = len(open(filename).readlines())
     getTablesElements = len(Tables.keys())
     x , y = getTablesElements , getFileLines
     BitMap = np.full((y,x),0,dtype='i')
-    BitMap[0,3] = 9
     #print BitMap
     y_line = 0
+
     with open(filename,'r') as f:
         for line in f.readlines():
             l = line.strip('\n')
@@ -44,7 +34,7 @@ def BitMapInit(filename,Tables,OutputFile):
             tmp_l.append(map(int,(l.split(','))))
             for Items in range(0,len(tmp_l[0])):
                  if "," is not tmp_l[0][Items]:
-                     key = int(tmp_l[0][Items])
+                     key = Tables[str(tmp_l[0][Items])]
                      BitMap[y_line,key-1] = 1
             y_line = y_line + 1
     print BitMap
@@ -67,5 +57,5 @@ if __name__ == "__main__":
         print "Here already have file"
         sys.exit()
     TableInfo = dict()
-    TableInfo = GetDictionery(table)
+    TableInfo = ReadFile(inputFile)
     BitMapInit(inputFile,TableInfo,exportFile)
