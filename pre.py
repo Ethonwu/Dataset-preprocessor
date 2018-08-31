@@ -93,7 +93,7 @@ if __name__ =="__main__":
         print options.usage
         sys.exit('Bye bye see you baby <3')
     filename = options.output
-    dictfile = 'Table.txt'
+    dictfile = 'Table_' + filename
     if os.path.exists(filename) or os.path.exists(dictfile):
         print "Here already have file"
         sys.exit()
