@@ -2,11 +2,12 @@
 import os
 import string
 import re
-if __name__ =="__main__":
+from optparse import OptionParser
+def Convert_back(convertFile,fileTable):
     convertDict = dict()
-    convertFile = 'Bit_Map_decode_to_value.txt'
+    #convertFile = 'Bit_Map_decode_to_value.txt'
     #convertFile = 'part-r-00000'
-    fileTable = 'orignal_value_item_table.txt'
+    #fileTable = 'orignal_value_item_table.txt'
     with open(fileTable,'r') as f:
         for line in f.readlines():
             l = line.strip('\n')
@@ -56,3 +57,24 @@ if __name__ =="__main__":
                 else:
                     cp_l = cp_l + "," +change
             print "Itemset is: " + cp_l + "  " + count + "Suopport Count is: " + support_count
+if __name__ =="__main__":
+    optparser = OptionParser("useage: %prog"+"-f <input dataset File>"+"-o <output covert dataset path>"+"-t <Table file>")
+    optparser.add_option('-f', '--inputFile',dest='input',help='filename',default=None)
+    optparser.add_option('-t','--inputTable',dest='table',help='Input Table',default=None)
+    optparser.add_option('-o','--output',dest='output',help='Output filename',default='Output.txt')
+    (options, args) = optparser.parse_args()
+    if options.input is None:
+        print sys.usage
+        sys.exit()
+    if options.table is None:
+        print sys.usage
+        sys.exit()
+    elif options.input is not None:
+        inFile = options.input
+    else:
+        print options.usage
+        sys.exit('Bye bye see you baby <3')
+    inFile_table = options.table
+    Convert_back(inFile, inFile_table)
+
+
